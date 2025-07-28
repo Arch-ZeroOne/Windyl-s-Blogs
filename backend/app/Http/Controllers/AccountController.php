@@ -17,11 +17,9 @@ use Throwable;
 
 class AccountController extends Controller
 {
-
     public function login(LoginRequest $request){
+        
         $validated = $request -> validated();
-  
-     
         $account = Account::where("email",$validated["email"])
                     -> where("password",$validated["password"])
                     ->  get();
@@ -37,10 +35,14 @@ class AccountController extends Controller
                 );
         }
 
+
+
         return response() -> json(
             [
                 "message" => "User Logged in",
                 "loggedIn" => true,
+                "account" => $account,
+               
             ]
             );
     }
@@ -49,8 +51,6 @@ class AccountController extends Controller
     //TODO Learn how to use throwables
     public function register(RegisterRequest $request){
         $validated = $request -> validated();
-
-
 
         if(!$validated){
             return response() -> json(
@@ -65,6 +65,7 @@ class AccountController extends Controller
                 "email" => $request["email"],
                 "username" => $request["username"],
                 "password" => $request["password"],
+                "role" => "User",
         ]);
 
 

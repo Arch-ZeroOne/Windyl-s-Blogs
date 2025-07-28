@@ -25,7 +25,7 @@ function Login() {
     axiosClient
       .post("http://127.0.0.1:8000/api/login", payLoad)
       .then((response) => {
-        const { loggedIn } = response.data;
+        const { loggedIn, account } = response.data;
 
         if (loggedIn) {
           setSpinning(false);
@@ -41,7 +41,11 @@ function Login() {
             },
           });
 
-          navigate("/home");
+          if (account[0].role === "User") {
+            navigate("/home");
+          } else {
+            navigate("/admin");
+          }
         } else {
           toast("Account not Found!", {
             icon: "😞",
@@ -51,6 +55,7 @@ function Login() {
               color: "#fff",
             },
           });
+          setSpinning(false);
         }
       })
       .catch((error) => {
