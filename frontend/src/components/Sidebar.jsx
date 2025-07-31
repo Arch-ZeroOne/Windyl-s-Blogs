@@ -8,22 +8,18 @@ function Sidebar() {
       icon: "fa-solid fa-chart-line text-2xl",
     },
     {
-      name: "Post",
+      name: "Posts",
       icon: "fa-solid fa-blog text-2xl",
     },
     {
       name: "Recent",
       icon: "fa-solid fa-clock-rotate-left text-2xl",
     },
-    {
-      name: "Activities",
-      icon: "fa-solid fa-bell text-2xl",
-    },
   ];
 
   return (
-    <section className="w-[20%]">
-      <div className="flex flex-col bg-white text-black  h-screen font-medium gap-10 ">
+    <section className="w-[20%] font-[Poppins]">
+      <div className="flex flex-col bg-[#353A40] text-white  h-screen font-medium gap-10 ">
         <User />
         <div className="flex flex-col gap-10 p-3 ">
           {links.map((item) => (
@@ -43,11 +39,6 @@ function User() {
       <div className="flex  items-center gap-2">
         <img src={AdminProfile} className="h-10 rounded-2xl"></img>
         <p className="text-sm">Admin1</p>
-      </div>
-
-      <div className="flex items-center">
-        <i className="fa-solid fa-atom text-3xl text-blue-600"></i>
-        <p className="text-sm">Admin</p>
       </div>
     </section>
   );

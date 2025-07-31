@@ -35,14 +35,11 @@ class AccountController extends Controller
                 );
         }
 
-
-
         return response() -> json(
             [
                 "message" => "User Logged in",
                 "loggedIn" => true,
                 "account" => $account,
-               
             ]
             );
     }

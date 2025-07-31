@@ -6,7 +6,7 @@ import router from "./router.jsx";
 import SpinnerContext from "./context/SpinnerContext.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  <StrictMode>  
     <div className="font-[Poppins]">
       <SpinnerContext>
         <RouterProvider router={router} />

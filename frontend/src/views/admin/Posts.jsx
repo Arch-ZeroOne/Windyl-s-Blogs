@@ -1,25 +1,106 @@
-import React from "react";
-
-function Posts() {
+import React, { useRef } from "react";
+import PostsCard from "./PostsCard";
+import axios from "axios";
+export default function Posts() {
   return (
     <div>
-      <div className="card card-side bg-base-100 shadow-sm">
-        <figure>
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
-            alt="Movie"
-          />
-        </figure>
-        <div className="card-body">
-          <h2 className="card-title">New movie is released!</h2>
-          <p>Click the button to watch on Jetflix app.</p>
-          <div className="card-actions justify-end">
-            <button className="btn btn-primary">Watch</button>
-          </div>
-        </div>
-      </div>
+      <Form />
     </div>
   );
 }
 
-export default Posts;
+function Form() {
+  const titleRef = useRef();
+  const imageRef = useRef();
+  const descRef = useRef();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const image = imageRef.current.files[0];
+
+    getImageUrl(image, titleRef.current.value, descRef.current.value);
+  };
+
+  return (
+    <form
+      className="flex flex-col items-center gap-4"
+      onSubmit={(e) => handleSubmit(e)}
+    >
+      <div className="flex flex-col items-center gap-2">
+        <label>Post Title</label>
+        <input
+          type="text"
+          placeholder="Title"
+          className="input input-neutral"
+          ref={titleRef}
+        />
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <label>Post Image</label>
+        <input
+          type="file"
+          className="file-input file-input-primary"
+          ref={imageRef}
+        />
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <label>Post Description</label>
+        <textarea
+          placeholder="Description"
+          className="textarea textarea-neutral"
+          ref={descRef}
+        ></textarea>
+      </div>
+
+      <button className="btn btn-soft btn-primary">Add Post</button>
+    </form>
+  );
+}
+
+async function getImageUrl(image, title, description) {
+  try {
+    if (!image) {
+      return;
+    }
+
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "blog_images");
+    data.append("cloud_name", "dwuelxoyn");
+
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dwuelxoyn/image/upload",
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+
+    const response = await res.json();
+    const { url } = response;
+    addPost(url, title, description);
+  } catch (error) {
+    console.log("Error occured in getImageUrl", error);
+  }
+}
+
+function addPost(url, title, description) {
+  const payload = {
+    url,
+    title,
+    description,
+  };
+  axios
+    .post("http://127.0.0.1:8000/api/addPost", payload)
+    .then((response) => {
+      title = "";
+      description = "";
+    })
+    .catch((error) => {
+      console.log("Error occured in addPost", error);
+    });
+}
+
+function Table() {
+  return <div></div>;
+}
